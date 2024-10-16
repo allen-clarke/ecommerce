@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "anton-sc";
+  src: url("src/assets/fonts/AntonSC-Regular.ttf");
+}
+.anton-sc {
+  font-family: anton-sc !important;
+}
