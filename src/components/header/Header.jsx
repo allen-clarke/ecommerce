@@ -72,6 +72,7 @@ const Header = () => {
             >
               <input
                 placeholder="Search"
+                id="search-bar"
                 type="text"
                 className="flex-1 px-3 py-2 bg-white rounded -mr-3 outline-none font-sans font-semibold text-black selection:bg-slate-400 shrink"
               />
@@ -84,10 +85,11 @@ const Header = () => {
                 <i className="bx bx-md bx-search-alt-2"></i>
               </button>
             </div>
-            <button
+            <label
+              htmlFor="search-bar"
               className={
                 searchBarDisplay === "false"
-                  ? "flex md:hidden items-center text-white search-icon p-0.5"
+                  ? "flex md:hidden items-center text-white search-icon p-0.5 cursor-pointer"
                   : "hidden"
               }
               onClick={() => {
@@ -95,7 +97,7 @@ const Header = () => {
               }}
             >
               <i className="bx bx-md bx-search-alt-2"></i>
-            </button>
+            </label>
 
             <button className="flex items-center text-white p-0.5">
               <i className={"bx bx-md bx-cart"}></i>
