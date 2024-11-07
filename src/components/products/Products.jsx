@@ -1,6 +1,15 @@
-import { products } from "./data/products";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const Products = () => {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/products")
+      .then((resolve) => setProducts(resolve.data))
+      .catch((error) => console.log(error));
+  }, []);
   return (
     <div className="grid gap-1 grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-14">
       {products.map((product) => {

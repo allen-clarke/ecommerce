@@ -1,6 +1,15 @@
-import { cart } from "./data/cart";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const Cart = () => {
+  const [cart, setCart] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/cart")
+      .then((resolve) => setCart(resolve.data))
+      .catch((error) => console.log(error.name));
+  }, []);
   return (
     <div className="mt-16 p-3 md:w-9/12 my-0 mx-auto">
       {cart.map((product) => {
