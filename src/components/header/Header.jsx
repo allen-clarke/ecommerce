@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Menu from "./Menu";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const [menuDisplay, setMenuDisplay] = useState("false");
@@ -99,9 +100,9 @@ const Header = () => {
               <i className="bx bx-md bx-search-alt-2"></i>
             </label>
 
-            <button className="flex items-center text-white p-0.5">
+            <Link to="/cart" className="flex items-center text-white p-0.5">
               <i className={"bx bx-md bx-cart"}></i>
-            </button>
+            </Link>
 
             <span className="absolute -top-2 right-1.5 text-orange-700 font-sans font-black cursor-pointer">
               00
