@@ -1,15 +1,29 @@
-import { useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import axios from "axios";
+import { CartQuantity } from "../../context/CartQuantity";
+import updateCartQuantity from "../../utilities/updateCartQuantity";
+import convertCents from "../../utilities/convertCents";
+import getRatingStars from "../../utilities/getRatingStar";
+import FetchData from "../../utilities/fetchData";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
+  const [addedToCart, setAddedToCart] = useState(undefined);
+  const { cartQuantity, setCartQuantity } = useContext(CartQuantity);
 
-  useEffect(() => {
+  FetchData("http://localhost:3000/products", setProducts);
+
+  const handleAddToCart = (product) => {
+    setCartQuantity(cartQuantity + 1);
+    setAddedToCart(product.id);
+    setTimeout(() => setAddedToCart(undefined), 1050);
     axios
-      .get("http://localhost:3000/products")
-      .then((resolve) => setProducts(resolve.data))
-      .catch((error) => console.log(error));
-  }, []);
+      .post("http://localhost:3000/cart", product)
+      .catch((error) => console.error(error));
+
+    updateCartQuantity("increase", cartQuantity);
+  };
+
   return (
     <div className="grid gap-1 grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-14">
       {products.map((product) => {
@@ -30,8 +44,16 @@ const Products = () => {
                 {product.name}
               </p>
               <div className="flex flex-row items-center">
-                <button className="flex items-center content-center rounded-full bg-gray-200 p-2 mr-2 text-2xl">
-                  <i className="bx bx-cart-add"></i>
+                <button
+                  className="flex items-center content-center rounded-full bg-gray-200 p-2 mr-2 text-2xl add-to-cart"
+                  onClick={() => handleAddToCart(product)}
+                  title="add to cart"
+                >
+                  {addedToCart === product.id ? (
+                    <i className="bx bxs-check-circle"></i>
+                  ) : (
+                    <i className="bx bx-cart-add"></i>
+                  )}
                 </button>
                 <button className="flex items-center content-center rounded-full bg-gray-200 p-2 text-2xl">
                   <i className="bx bx-heart"></i>
@@ -41,16 +63,12 @@ const Products = () => {
 
             <div className="flex flex-row justify-between items-center w-full">
               <p className="text-black font-black font-mono w-1/2">
-                ${(Math.round(product.priceCents) / 100).toFixed(2)}
+                ${convertCents(product.priceCents)}
               </p>
               <div className="flex flex-row items-center">
                 <img
                   className="max-w-[100px]"
-                  src={
-                    "src/assets/products/ratings/rating-" +
-                    product.rating.stars * 10 +
-                    ".png"
-                  }
+                  src={getRatingStars(product.rating.stars)}
                   alt={"rating " + product.rating.stars}
                 />
                 <p className="text-black font-bold font-sans ml-2.5">
