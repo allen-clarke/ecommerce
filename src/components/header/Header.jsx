@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Menu from "./Menu";
 import { Link } from "react-router-dom";
+import { CartQuantity } from "../../context/CartQuantity";
 
 const Header = () => {
   const [menuDisplay, setMenuDisplay] = useState("false");
   const [searchBarDisplay, setSearchBarDisplay] = useState("false");
+  const { cartQuantity } = useContext(CartQuantity);
 
   const leftNavigationBtns = ["Men", "Women", "Kids", "Brands"];
 
@@ -105,7 +107,7 @@ const Header = () => {
             </Link>
 
             <span className="absolute -top-2 right-1.5 text-orange-700 font-sans font-black cursor-pointer">
-              00
+              {localStorage.getItem("cartQuantity") || cartQuantity}
             </span>
           </div>
         </div>

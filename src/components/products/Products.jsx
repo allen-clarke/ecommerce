@@ -1,21 +1,75 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
+import { CartQuantity } from "../../context/CartQuantity";
+import updateCartQuantity from "../../utilities/updateCartQuantity";
+import convertCents from "../../utilities/convertCents";
+import getRatingStars from "../../utilities/getRatingStar";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
+  const [addedToCart, setAddedToCart] = useState(undefined);
+  const { cartQuantity, setCartQuantity } = useContext(CartQuantity);
 
   useEffect(() => {
     axios
       .get("http://localhost:3000/products")
-      .then((resolve) => setProducts(resolve.data))
-      .catch((error) => console.log(error));
+      .then((resolve) => {
+        setProducts(resolve.data);
+        resolve.data.map((datum) => (datum.quantity = 1));
+      })
+      .catch((error) => console.error(error));
   }, []);
+
+  const handleAddToCart = (product) => {
+    indicateAddedToCart();
+
+    handleCartQtyChange();
+
+    addOrUpdateCartItem();
+
+    function indicateAddedToCart() {
+      setAddedToCart(product.id);
+      setTimeout(() => setAddedToCart(undefined), 1050);
+    }
+
+    function handleCartQtyChange() {
+      setCartQuantity(cartQuantity + product.quantity);
+      updateCartQuantity("increase", cartQuantity, product);
+    }
+
+    function addOrUpdateCartItem() {
+      axios
+        .get("http://localhost:3000/cart", {
+          params: { id: product.id },
+        })
+        .then((resolve) => {
+          if (resolve.data.length > 0) {
+            const sameProduct = resolve.data[0];
+            axios.patch(`http://localhost:3000/cart/${sameProduct.id}`, {
+              quantity: sameProduct.quantity + product.quantity,
+            });
+          } else {
+            axios
+              .post("http://localhost:3000/cart", product)
+              .catch((error) => console.error(error));
+          }
+        })
+        .catch((error) => console.error(error));
+    }
+  };
+
+  const handleProductQtyChange = (e, product) => {
+    e.target.value === ""
+      ? (product.quantity = 1)
+      : (product.quantity = parseInt(e.target.value));
+  };
+
   return (
     <div className="grid gap-1 grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-14">
       {products.map((product) => {
         return (
           <div
-            className="flex flex-col border items-center rounded-md p-3"
+            className="relative flex flex-col border items-center rounded-md p-3"
             key={product.id}
           >
             <div className="h-52 mb-1.5">
@@ -30,8 +84,18 @@ const Products = () => {
                 {product.name}
               </p>
               <div className="flex flex-row items-center">
-                <button className="flex items-center content-center rounded-full bg-gray-200 p-2 mr-2 text-2xl">
-                  <i className="bx bx-cart-add"></i>
+                <button
+                  className="flex items-center content-center rounded-full bg-gray-200 p-2 mr-2 text-2xl add-to-cart"
+                  onClick={() => handleAddToCart(product)}
+                  title="add to cart"
+                >
+                  <i
+                    className={
+                      addedToCart === product.id
+                        ? "bx bxs-check-circle"
+                        : "bx bx-cart-add"
+                    }
+                  ></i>
                 </button>
                 <button className="flex items-center content-center rounded-full bg-gray-200 p-2 text-2xl">
                   <i className="bx bx-heart"></i>
@@ -39,24 +103,42 @@ const Products = () => {
               </div>
             </div>
 
-            <div className="flex flex-row justify-between items-center w-full">
-              <p className="text-black font-black font-mono w-1/2">
-                ${(Math.round(product.priceCents) / 100).toFixed(2)}
-              </p>
+            <div
+              className="flex flex-row justify-between w-full"
+              style={{ alignItems: "center" }}
+            >
+              <div
+                className="flex font-semibold"
+                style={{ alignItems: "center" }}
+              >
+                <p className="text-black font-sans text-[18px]">
+                  Quantity:&nbsp;
+                </p>
+                <input
+                  id={product.id}
+                  type="number"
+                  defaultValue={product.quantity}
+                  min={1}
+                  className="w-10 h-5 outline-gray-400 rounded border border-gray-400"
+                  onChange={(e) => handleProductQtyChange(e, product)}
+                />
+              </div>
               <div className="flex flex-row items-center">
                 <img
                   className="max-w-[100px]"
-                  src={
-                    "src/assets/products/ratings/rating-" +
-                    product.rating.stars * 10 +
-                    ".png"
-                  }
+                  src={getRatingStars(product.rating.stars)}
                   alt={"rating " + product.rating.stars}
                 />
                 <p className="text-black font-bold font-sans ml-2.5">
                   {product.rating.count}
                 </p>
               </div>
+            </div>
+
+            <div className="absolute top-2 right-2">
+              <p className="text-black font-black font-mono w-1/2">
+                ${convertCents(product.priceCents)}
+              </p>
             </div>
           </div>
         );
