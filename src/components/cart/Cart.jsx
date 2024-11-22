@@ -5,6 +5,7 @@ import updateCartQuantity from "../../utilities/updateCartQuantity";
 import FetchData from "../../utilities/fetchData";
 import convertCents from "../../utilities/convertCents";
 import getRatingStars from "../../utilities/getRatingStar";
+import OrderSummary from "../orderSummary/OrderSummary";
 
 const Cart = () => {
   const [cart, setCart] = useState([]);
@@ -90,6 +91,7 @@ const Cart = () => {
           </div>
         );
       })}
+      <OrderSummary />
     </div>
   );
 };
