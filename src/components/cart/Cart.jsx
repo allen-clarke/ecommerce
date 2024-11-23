@@ -4,6 +4,7 @@ import { CartQuantity } from "../../context/CartQuantity";
 import updateCartQuantity from "../../utilities/updateCartQuantity";
 import convertCents from "../../utilities/convertCents";
 import getRatingStars from "../../utilities/getRatingStar";
+import OrderSummary from "../orderSummary/OrderSummary";
 
 const Cart = () => {
   const [cart, setCart] = useState([]);
@@ -16,11 +17,11 @@ const Cart = () => {
       .catch((error) => console.error(error));
   }, [cart]);
 
-  const handleRemoveFromCart = (id, cartItem) => {
+  const handleRemoveFromCart = (cartItem) => {
     setCartQuantity(cartQuantity - cartItem.quantity);
 
     axios
-      .delete(`http://localhost:3000/cart/${id}`)
+      .delete(`http://localhost:3000/cart/${cartItem.id}`)
       .catch((error) => console.error(error));
 
     updateCartQuantity("decrease", cartQuantity, cartItem);
@@ -93,13 +94,14 @@ const Cart = () => {
             <button
               className="flex items-center content-center rounded p-2 text-2xl absolute right-1 bottom-2"
               title="remove from cart"
-              onClick={() => handleRemoveFromCart(cartItem.id, cartItem)}
+              onClick={() => handleRemoveFromCart(cartItem)}
             >
               <i className="bx bx-trash text-[28px]"></i>
             </button>
           </div>
         );
       })}
+      <OrderSummary />
     </div>
   );
 };

@@ -123,6 +123,7 @@ const Products = () => {
                   onChange={(e) => handleProductQtyChange(e, product)}
                 />
               </div>
+
               <div className="flex flex-row items-center">
                 <img
                   className="max-w-[100px]"
