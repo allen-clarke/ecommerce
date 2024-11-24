@@ -1,4 +1,6 @@
-const OrderSummary = () => {
+import { Link } from "react-router-dom";
+
+const OrderSummary = ({ totalPurchase }) => {
   return (
     <div className="border rounded bg-transparent pt-5 mb-2 mt-12">
       <div>
@@ -9,19 +11,31 @@ const OrderSummary = () => {
       <div className="flex flex-col pb-2">
         <div className="flex flex-row justify-between px-2 py-3">
           <p className="anton-sc text-black">Subtotal</p>
-          <p className="text-black font-medium font-sans">$2087.98</p>
+          <p className="text-black font-bold font-sans">
+            ${totalPurchase.toFixed(2)}
+          </p>
         </div>
         <div className="flex flex-row justify-between px-2 py-3">
           <p className="anton-sc text-black">Delivery</p>
-          <p className="text-black font-medium font-sans">Free</p>
+          <p className="text-black font-bold font-sans">
+            {totalPurchase > 150 ? "Free" : "$" + Number(3).toFixed(2)}
+          </p>
         </div>
         <div className="flex flex-row justify-between px-2 py-3 border-y mb-2">
           <p className="anton-sc text-black">Total</p>
-          <p className="text-black font-medium font-sans">$1064.39</p>
+          <p className="text-black font-bold font-sans">
+            $
+            {totalPurchase > 150
+              ? totalPurchase.toFixed(2)
+              : (totalPurchase + 3).toFixed(2)}
+          </p>
         </div>
-        <button className="bg-orange-700 hover:bg-orange-600 text-white text-2xl font-medium rounded-3xl font-sans py-2.5 mx-2">
+        <Link
+          to="/checkout"
+          className="bg-orange-700 hover:bg-orange-600 text-white text-center text-2xl font-medium rounded-3xl font-sans py-2.5 mx-2"
+        >
           Check Out
-        </button>
+        </Link>
       </div>
     </div>
   );

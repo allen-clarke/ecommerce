@@ -27,6 +27,12 @@ const Cart = () => {
     updateCartQuantity("decrease", cartQuantity, cartItem);
   };
 
+  let totalPurchase = 0;
+  cart.forEach((cartItem) => {
+    totalPurchase +=
+      (Math.round(cartItem.priceCents) / 100) * cartItem.quantity;
+  });
+
   return (
     <div className="mt-16 p-3 md:w-9/12 my-0 mx-auto">
       {cart.map((cartItem) => {
@@ -101,7 +107,7 @@ const Cart = () => {
           </div>
         );
       })}
-      <OrderSummary />
+      <OrderSummary totalPurchase={totalPurchase} />
     </div>
   );
 };
