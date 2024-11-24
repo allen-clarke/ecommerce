@@ -5,7 +5,9 @@ const Layout = () => {
   return (
     <>
       <Header />
-      <Outlet />
+      <main className="flex-grow flex-shrink-0 basis-auto">
+        <Outlet />
+      </main>
     </>
   );
 };

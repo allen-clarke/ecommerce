@@ -5,6 +5,7 @@ import updateCartQuantity from "../../utilities/updateCartQuantity";
 import convertCents from "../../utilities/convertCents";
 import getRatingStars from "../../utilities/getRatingStar";
 import OrderSummary from "../orderSummary/OrderSummary";
+import EmptyCart from "./EmptyCart";
 
 const Cart = () => {
   const [cart, setCart] = useState([]);
@@ -33,7 +34,9 @@ const Cart = () => {
       (Math.round(cartItem.priceCents) / 100) * cartItem.quantity;
   });
 
-  return (
+  return cart.length === 0 ? (
+    <EmptyCart />
+  ) : (
     <div className="mt-16 p-3 md:w-9/12 my-0 mx-auto">
       {cart.map((cartItem) => {
         return (
