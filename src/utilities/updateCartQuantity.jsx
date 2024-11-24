@@ -3,7 +3,7 @@ function updateCartQuantity(operation, cartQuantity, product) {
   localStorage.setItem(
     "cartQuantity",
     operation === "increase"
-      ? cartQuantity + product.quantity || localCartQuantity + product.quantity
+      ? localCartQuantity + product.quantity || cartQuantity + product.quantity
       : localCartQuantity - product.quantity
   );
 }
