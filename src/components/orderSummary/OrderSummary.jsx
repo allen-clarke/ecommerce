@@ -32,7 +32,7 @@ const OrderSummary = ({ totalPurchase }) => {
         </div>
         <Link
           to="/checkout"
-          className="bg-orange-700 hover:bg-orange-600 text-white text-center text-2xl font-medium rounded-3xl font-sans py-2.5 mx-2"
+          className="bg-orange-500 hover:bg-orange-600 text-white text-center text-2xl font-medium rounded-3xl font-serif py-2.5 mx-2"
         >
           Check Out
         </Link>
