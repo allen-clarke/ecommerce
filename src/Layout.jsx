@@ -1,10 +1,11 @@
 import Header from "./components/header/Header";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 
 const Layout = () => {
+  const location = useLocation();
   return (
     <>
-      <Header />
+      {location.pathname !== "/admin" && <Header />}
       <main className="flex-grow flex-shrink-0 basis-auto">
         <Outlet />
       </main>
