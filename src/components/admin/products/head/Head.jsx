@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Head = () => {
   return (
     <div className="fixed z-40 top-12 left-56 right-4 flex flex-col bg-[rgb(29,35,42)] pt-8">
@@ -31,10 +33,13 @@ const Head = () => {
               Filter
             </option>
           </select>
-          <button className="flex items-center h-[44px] px-2 text-[11px] font-sans font-bold border rounded-md text-white border-purple-800 bg-purple-800">
+          <Link
+            to="/admin/new"
+            className="flex items-center h-[44px] px-2 text-[11px] font-sans font-bold border rounded-md text-white border-purple-800 bg-purple-800"
+          >
             <i className="bx bx-plus text-sm mr-0.5"></i>
             Add Product
-          </button>
+          </Link>
         </div>
       </div>
     </div>
