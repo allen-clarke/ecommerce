@@ -12,6 +12,11 @@ const ProductTable = () => {
       .catch((error) => console.error(error));
   }, [products]);
 
+  const handleDeleteProduct = (product) => {
+    confirm(`Are you sure you want to delete ${product.name} ?`) &&
+      axios.delete(`http://localhost:3000/products/${product.id}`);
+  };
+
   return (
     <div className="absolute top-[152px] left-56 right-4 text-3xl text-white min-h-screen border border-gray-300 rounded-b-lg bg-stone-100">
       <div className="overflow-x-auto">
@@ -65,6 +70,7 @@ const ProductTable = () => {
                   <button
                     className="bg-gray-300 w-8 h-8 rounded-md"
                     title="delete product"
+                    onClick={() => handleDeleteProduct(product)}
                   >
                     <i className="text-2xl text-red-600 bx bx-trash"></i>
                   </button>
