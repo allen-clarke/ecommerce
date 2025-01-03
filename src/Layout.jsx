@@ -3,7 +3,11 @@ import { Outlet, useLocation } from "react-router-dom";
 
 const Layout = () => {
   const location = useLocation();
-  const adminPaths = ["/admin", "/admin/new"];
+  const adminPaths = [
+    "/admin",
+    "/admin/product/new",
+    "/admin/product/edit/:id",
+  ];
   return (
     <>
       {adminPaths.forEach((path) => location.pathname !== path && <Header />)}

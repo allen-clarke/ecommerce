@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import convertCents from "../../../utilities/convertCents";
+import { Link } from "react-router-dom";
 
 const ProductTable = () => {
   const [products, setProducts] = useState([]);
@@ -46,11 +47,7 @@ const ProductTable = () => {
                   <div className="flex items-center gap-3">
                     <div className="avatar">
                       <div className="mask mask-squircle h-12 w-12">
-                        <img
-                          src={product.image}
-                          // "https://img.daisyui.com/images/profile/demo/2@94.webp"
-                          alt={product.name}
-                        />
+                        <img src={product.image} alt={product.name} />
                       </div>
                     </div>
                     <div>
@@ -61,12 +58,13 @@ const ProductTable = () => {
                 <td>{convertCents(product.priceCents)}</td>
                 <td>Clothing</td>
                 <td className="flex items-center">
-                  <button
-                    className="bg-gray-300 w-8 h-8 mr-0.5 rounded-md"
+                  <Link
+                    to={"/admin/edit/" + product.id}
+                    className="bg-gray-300 w-8 h-8 mr-0.5 rounded-md flex items-center justify-center"
                     title="edit product"
                   >
                     <i className="text-2xl text-gray-700 bx bx-pencil"></i>
-                  </button>
+                  </Link>
                   <button
                     className="bg-gray-300 w-8 h-8 rounded-md"
                     title="delete product"
