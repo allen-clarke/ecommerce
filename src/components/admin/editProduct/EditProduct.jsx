@@ -25,7 +25,13 @@ const EditProduct = () => {
       })
       .min(1, "Price is required"),
 
-    keywords: z.string().min(3, "Keyword is too short"),
+    keywords: z.preprocess(
+      (value) =>
+        typeof value === "string"
+          ? value.split(",").map((keyword) => keyword.trim())
+          : value,
+      z.array(z.string().min(3, "Keyword is too short"))
+    ),
   });
 
   const {
@@ -57,6 +63,7 @@ const EditProduct = () => {
             type="text"
             id="product-image"
             className="border border-[rgb(29,35,42)] outline-gray-300 p-2 rounded-md font-sans font-normal text-xl md:w-96 w-80 mt-3.5"
+            defaultValue={product.image}
           />
           {errors.image && (
             <p className="text-red-500">{errors.image.message}</p>
@@ -70,6 +77,7 @@ const EditProduct = () => {
             type="text"
             id="product-name"
             className="border border-[rgb(29,35,42)] outline-gray-300 p-2 rounded-md font-sans font-normal text-xl md:w-96 w-80 mt-3.5"
+            defaultValue={product.name}
           />
           {errors.name && <p className="text-red-500">{errors.name.message}</p>}
         </label>
@@ -81,6 +89,7 @@ const EditProduct = () => {
             type="text"
             id="product-price"
             className="border border-[rgb(29,35,42)] outline-gray-300 p-2 rounded-md font-sans font-normal text-xl md:w-96 w-80 mt-3.5"
+            defaultValue={product.priceCents}
           />
           {errors.priceCents && (
             <p className="text-red-500">{errors.priceCents.message}</p>
@@ -95,6 +104,7 @@ const EditProduct = () => {
             type="text"
             id="keywords"
             className="border border-[rgb(29,35,42)] outline-gray-300 p-2 rounded-md font-sans font-normal text-xl md:w-96 w-80 mt-3.5"
+            defaultValue={product.keywords}
           />
           {errors.keywords && (
             <p className="text-red-500">{errors.keywords.message}</p>
