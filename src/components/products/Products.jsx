@@ -7,6 +7,9 @@ import getRatingStars from "../../utilities/getRatingStar";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
+  const [cart, setCart] = useState(
+    JSON.parse(localStorage.getItem("cart")) || []
+  );
   const [addedToCart, setAddedToCart] = useState(undefined);
   const { cartQuantity, setCartQuantity } = useContext(CartQuantity);
 
@@ -19,6 +22,9 @@ const Products = () => {
       })
       .catch((error) => console.error(error));
   }, []);
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
 
   const handleAddToCart = (product) => {
     indicateAddedToCart();
@@ -38,23 +44,21 @@ const Products = () => {
     }
 
     function addOrUpdateCartItem() {
-      axios
-        .get("http://localhost:3000/cart", {
-          params: { id: product.id },
-        })
-        .then((resolve) => {
-          if (resolve.data.length > 0) {
-            const sameProduct = resolve.data[0];
-            axios.patch(`http://localhost:3000/cart/${sameProduct.id}`, {
-              quantity: sameProduct.quantity + product.quantity,
-            });
-          } else {
-            axios
-              .post("http://localhost:3000/cart", product)
-              .catch((error) => console.error(error));
-          }
-        })
-        .catch((error) => console.error(error));
+      setCart([...cart, product]);
+
+      cart.map((cartItem) => {
+        cartItem.id === product.id &&
+          setCart(
+            cart.map((cartItem) =>
+              cartItem.id === product.id
+                ? {
+                    ...cartItem,
+                    quantity: cartItem.quantity + product.quantity,
+                  }
+                : cartItem
+            )
+          );
+      });
     }
   };
 
