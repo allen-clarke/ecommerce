@@ -4,14 +4,13 @@ import { CartQuantity } from "../../context/CartQuantity";
 import updateCartQuantity from "../../utilities/updateCartQuantity";
 import convertCents from "../../utilities/convertCents";
 import getRatingStars from "../../utilities/getRatingStar";
+import useCart from "../../hooks/useCart";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
-  const [cart, setCart] = useState(
-    JSON.parse(localStorage.getItem("cart")) || []
-  );
   const [addedToCart, setAddedToCart] = useState(undefined);
   const { cartQuantity, setCartQuantity } = useContext(CartQuantity);
+  const { cart, setCart } = useCart();
 
   useEffect(() => {
     axios
@@ -22,9 +21,6 @@ const Products = () => {
       })
       .catch((error) => console.error(error));
   }, []);
-  useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cart));
-  }, [cart]);
 
   const handleAddToCart = (product) => {
     indicateAddedToCart();

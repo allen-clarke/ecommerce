@@ -1,31 +1,22 @@
-import { useState, useContext, useEffect } from "react";
-import axios from "axios";
+import { useContext } from "react";
 import { CartQuantity } from "../../context/CartQuantity";
 import updateCartQuantity from "../../utilities/updateCartQuantity";
 import convertCents from "../../utilities/convertCents";
 import getRatingStars from "../../utilities/getRatingStar";
 import OrderSummary from "../orderSummary/OrderSummary";
 import EmptyCart from "./EmptyCart";
+import useCart from "../../hooks/useCart";
 
 const Cart = () => {
-  const [cart, setCart] = useState([]);
+  const { cart, setCart } = useCart();
   const { cartQuantity, setCartQuantity } = useContext(CartQuantity);
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:3000/cart")
-      .then((resolve) => setCart(resolve.data))
-      .catch((error) => console.error(error));
-  }, [cart]);
+  const handleRemoveFromCart = (cartItemToBeDeleted) => {
+    setCartQuantity(cartQuantity - cartItemToBeDeleted.quantity);
 
-  const handleRemoveFromCart = (cartItem) => {
-    setCartQuantity(cartQuantity - cartItem.quantity);
+    setCart(cart.filter((cartItem) => cartItem !== cartItemToBeDeleted));
 
-    axios
-      .delete(`http://localhost:3000/cart/${cartItem.id}`)
-      .catch((error) => console.error(error));
-
-    updateCartQuantity("decrease", cartQuantity, cartItem);
+    updateCartQuantity("decrease", cartQuantity, cartItemToBeDeleted);
   };
 
   let totalPurchase = 0;
