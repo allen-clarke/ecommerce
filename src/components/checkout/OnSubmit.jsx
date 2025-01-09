@@ -1,9 +1,11 @@
-export const onSubmit = async (data) => {
+import axios from "axios";
+
+export const onSubmit = async (buyerDetails) => {
+  const cart = JSON.parse(localStorage.getItem("cart"));
   await new Promise((resolve) => {
-    setTimeout(resolve, 4000);
+    setTimeout(resolve, 3000);
   });
-  // axios.post("http://localhost:3000/deliveryInformations", data);
-  console.log(data);
+  axios.post("http://localhost:3000/orders", { buyerDetails, cart });
 
   // reset();
 };
