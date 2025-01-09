@@ -63,7 +63,6 @@ export const locationDetails = [
     label: "Street / Community",
     type: "text",
     id: "community",
-
     displayErrorMessage(errors) {
       {
         if (errors.community)

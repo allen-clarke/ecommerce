@@ -54,38 +54,6 @@ const Checkout = () => {
           })}
         </div>
 
-        {/* <h2 className="text-black text-center md:text-left font-extrabold anton-sc text-xl mt-6 mb-2 ml-2">
-          Payment Method
-        </h2>
-        <div className="flex justify-around flex-wrap items-center md:border rounded-lg py-3 md:py-7 md:px-3 mb-10">
-          {paymentMethods.map((method, index) => (
-            <div className="flex items-center" key={index}>
-              <input
-                {...register("payment", { required: "Select payment method" })}
-                onChange={(e) => handlePaymentMethodChange(e)}
-                type="radio"
-                name="payment-method"
-                id={method.id}
-                value={method.value}
-                className="mr-2 appearance-none"
-              />
-
-              <label
-                htmlFor={method.labelFor}
-                className="flex items-center text-black font-sans font-bold cursor-pointer"
-              >
-                <i
-                  className={
-                    paymentMethod === method.value
-                      ? "bx bxs-circle text-xl mr-2"
-                      : "bx bx-circle text-xl mr-2"
-                  }
-                ></i>
-                <span>{method.value}</span>
-              </label>
-            </div>
-          ))}
-        </div> */}
         <button
           type="submit"
           disabled={isSubmitting}
