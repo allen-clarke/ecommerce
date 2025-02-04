@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { sidebarItems } from "./SidebarItems";
+import { Link } from "react-router-dom";
 
 const Sidebar = () => {
   const [isActive, setIsActive] = useState(0);
@@ -8,9 +9,10 @@ const Sidebar = () => {
     <aside className="fixed left-0 w-52 h-screen bg-stone-100 py-4 border-r border-r-[rgb(29,35,42)]">
       <p className="text-black text-2xl anton-sc ml-3.5">Fashionista</p>
 
-      <ul className="mt-7">
+      <div className="mt-7">
         {sidebarItems.map((sidebarItem, index) => (
-          <li
+          <Link
+            to={sidebarItem.link}
             key={index}
             className={
               isActive === index
@@ -21,9 +23,9 @@ const Sidebar = () => {
           >
             <i className={"bx mr-2 " + sidebarItem.icon}></i>
             {sidebarItem.label}
-          </li>
+          </Link>
         ))}
-      </ul>
+      </div>
       <button className="absolute bottom-6 left-4 flex items-center text-[17px] text-gray-800 font-medium font-sans">
         <i className="bx bx-log-out rotate-180 mr-1"></i>Log out
       </button>

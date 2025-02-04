@@ -3,6 +3,7 @@ import Layout from "./Layout";
 import Products from "./products/Products";
 import NewProducts from "./newProducts/NewProduct";
 import EditProduct from "./editProduct/EditProduct";
+import Orders from "./order/Orders";
 
 const Admin = () => {
   return (
@@ -11,6 +12,7 @@ const Admin = () => {
         <Route index element={<Products />} />
         <Route path="new" element={<NewProducts />} />
         <Route path="edit/:id" element={<EditProduct />} />
+        <Route path="orders" element={<Orders />} />
       </Route>
     </Routes>
   );
