@@ -17,6 +17,7 @@ const checkoutFormValidation = z.object({
   county: z.string().min(1, "Select your county"),
   city: z.string().min(1, "Input your city"),
   community: z.string().min(1, "Input your community"),
+  date: z.string().min(1),
 });
 const Checkout = () => {
   const {
@@ -52,6 +53,14 @@ const Checkout = () => {
               </label>
             );
           })}
+
+          <input
+            {...register("date")}
+            type="text"
+            id="date"
+            className="border outline-gray-300 p-2 rounded-md font-sans font-normal text-xl md:w-96 w-80 mt-3.5 hidden"
+            value={new Date().toLocaleDateString()}
+          />
         </div>
 
         <button

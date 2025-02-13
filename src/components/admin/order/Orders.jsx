@@ -70,7 +70,7 @@ const Orders = () => {
                   <td>#{order.id}</td>
                   <td>{order.buyerDetails.fullname}</td>
                   <td>${order.orderTotal.toFixed(2)}</td>
-                  <td>{new Date().toLocaleDateString()}</td>
+                  <td>{order.buyerDetails.date}</td>
                   <td className="flex items-center">
                     <button
                       className="bg-gray-300 w-8 h-8 mr-0.5 rounded-md"
