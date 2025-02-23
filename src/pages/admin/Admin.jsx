@@ -1,9 +1,9 @@
 import { Routes, Route } from "react-router-dom";
 import Layout from "./Layout";
-import Products from "./products/Products";
-import NewProducts from "./newProducts/NewProduct";
-import EditProduct from "./editProduct/EditProduct";
-import Orders from "./order/Orders";
+import Products from "./Products";
+import NewProducts from "./NewProductPage";
+import EditProduct from "./EditProductPage";
+import Orders from "./OrdersPage";
 
 const Admin = () => {
   return (

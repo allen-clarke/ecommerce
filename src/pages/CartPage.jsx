@@ -1,44 +1,29 @@
-"use client";
-
-import { useState } from "react";
-import {
-  Dialog,
-  DialogBackdrop,
-  DialogPanel,
-  DialogTitle,
-} from "@headlessui/react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
-import { useContext } from "react";
-import { CartQuantity } from "../../context/CartQuantity";
-import updateCartQuantity from "../../utilities/updateCartQuantity";
-import convertCents from "../../utilities/convertCents";
-import getRatingStars from "../../utilities/getRatingStar";
-import OrderSummary from "../orderSummary/OrderSummary";
-import EmptyCart from "./EmptyCart";
-import useCart from "../../hooks/useCart";
+import { useContext, useState } from "react";
+import { CartQuantity } from "../context/CartQuantity";
+import updateCartQuantity from "../utilities/updateCartQuantity";
+import convertCents from "../utilities/convertCents";
+import OrderSummary from "../components/OrderSummary";
+import useCart from "../hooks/useCart";
 
 const Cart = () => {
-  const [open, setOpen] = useState(true);
   const { cart, setCart } = useCart();
   const { cartQuantity, setCartQuantity } = useContext(CartQuantity);
 
   const handleRemoveFromCart = (cartItemToBeDeleted) => {
-    setCartQuantity(cartQuantity - cartItemToBeDeleted.quantity);
-
     setCart(cart.filter((cartItem) => cartItem !== cartItemToBeDeleted));
+
+    setCartQuantity(cartQuantity - cartItemToBeDeleted.quantity);
 
     updateCartQuantity("decrease", cartQuantity, cartItemToBeDeleted);
   };
 
-  let totalPurchase = 0;
+  let actualPurchase = 0;
   cart.forEach((cartItem) => {
-    totalPurchase +=
+    actualPurchase +=
       (Math.round(cartItem.priceCents) / 100) * cartItem.quantity;
   });
 
-  return cart.length === 0 ? (
-    <EmptyCart />
-  ) : (
+  return (
     <div className="font-[sans-serif] bg-white h-full">
       <div className="max-w-7xl max-lg:max-w-3xl mx-auto p-6">
         <h2 className="text-2xl font-bold text-gray-800">Shopping Cart</h2>
@@ -124,7 +109,7 @@ const Cart = () => {
             );
           })}
 
-          <OrderSummary totalPurchase={totalPurchase} />
+          <OrderSummary actualPurchase={actualPurchase} />
         </div>
       </div>
     </div>

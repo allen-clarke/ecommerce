@@ -1,21 +1,17 @@
-import Footer from "./components/footer/Footer";
-import Header from "./components/header/Header";
+import Footer from "./components/Footer";
+import Header from "./components/Header";
 import { Outlet, useLocation } from "react-router-dom";
 
 const Layout = () => {
-  const location = useLocation();
-  const adminPaths = [
-    "/admin",
-    "/admin/product/new",
-    "/admin/product/edit/:id",
-  ];
+  const { pathname } = useLocation();
+
   return (
     <>
-      <Header />
+      {!pathname.includes("/admin") && <Header />}
       <main className="flex-grow flex-shrink-0 basis-auto">
         <Outlet />
       </main>
-      <Footer />
+      {!pathname.includes("/admin") && <Footer />}
     </>
   );
 };

@@ -1,30 +1,13 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
-import convertCents from "../../../utilities/convertCents";
-import Head from "../products/head/Head";
-import OrderPreviewModal from "./OrderPreviewModal";
+import OrderPreviewModal from "../../components/admin/order/OrderPreviewModal";
+import useOrder from "../../hooks/useOrder";
 
 const Orders = () => {
-  const [orders, setOrders] = useState([]);
+  const { orders } = useOrder();
   const [orderPreview, setOrderPreview] = useState([]);
   const [orderPreviewBoxesAreVisible, setOrderPreviewBoxesAreVisible] =
     useState(false);
-  useEffect(() => {
-    axios
-      .get("http://localhost:3000/orders")
-      .then((resolve) => {
-        //get the total of each order
-        resolve.data.map((datum) => {
-          datum.orderTotal = 0;
-          datum.cart.map((order) => {
-            datum.orderTotal += (order.priceCents / 100) * order.quantity;
-          });
-        });
-
-        setOrders(resolve.data);
-      })
-      .catch((error) => console.error(error));
-  }, [orders]);
 
   //get the total of all the orders
   let totalOrder = 0;
@@ -38,7 +21,6 @@ const Orders = () => {
 
   return (
     <>
-      {/* <Head /> */}
       <OrderPreviewModal
         orderPreviewBoxesAreVisible={orderPreviewBoxesAreVisible}
         setOrderPreviewBoxesAreVisible={setOrderPreviewBoxesAreVisible}
@@ -48,8 +30,8 @@ const Orders = () => {
       <div
         className={
           orderPreviewBoxesAreVisible
-            ? "fixed top-20 left-56 right-4 text-3xl text-white min-h-screen border border-gray-300 rounded-b-lg bg-stone-100"
-            : "absolute top-20 left-56 right-4 text-3xl text-white min-h-screen border border-gray-300 rounded-b-lg bg-stone-100"
+            ? "fixed top-36 left-56 right-4 text-3xl text-white min-h-screen border border-gray-300 rounded-b-lg bg-stone-100"
+            : "absolute top-28 left-56 right-4 text-3xl text-white min-h-screen border border-gray-300 rounded-b-lg bg-stone-100"
         }
       >
         <div className="overflow-x-auto">

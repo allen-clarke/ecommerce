@@ -1,11 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { CartQuantity } from "../../context/CartQuantity";
-import updateCartQuantity from "../../utilities/updateCartQuantity";
-import convertCents from "../../utilities/convertCents";
-import getRatingStars from "../../utilities/getRatingStar";
-import useCart from "../../hooks/useCart";
-import Hero from "../hero/Hero";
+import { CartQuantity } from "../context/CartQuantity";
+import updateCartQuantity from "../utilities/updateCartQuantity";
+import convertCents from "../utilities/convertCents";
+import useCart from "../hooks/useCart";
+import Hero from "../components/Hero";
 
 const Products = () => {
   const [products, setProducts] = useState([]);

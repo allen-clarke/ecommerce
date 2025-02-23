@@ -19,7 +19,7 @@ const ProductTable = () => {
   };
 
   return (
-    <div className="absolute top-[152px] left-56 right-4 text-3xl text-white min-h-screen border border-gray-300 rounded-b-lg bg-stone-100">
+    <div className="absolute top-36 left-56 right-4 text-3xl text-white min-h-screen border border-gray-300 rounded-b-lg bg-stone-100">
       <div className="overflow-x-auto">
         <table className="table text-gray-700 text-[17px] font-sans font-medium w-full">
           <thead>

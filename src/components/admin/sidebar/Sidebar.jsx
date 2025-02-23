@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { sidebarItems } from "./SidebarItems";
+import { sidebarItems } from "./sidebarItems";
 import { Link } from "react-router-dom";
 
 const Sidebar = () => {
-  const [isActive, setIsActive] = useState(0);
+  const [isActive, setIsActive] = useState(-1);
 
   return (
     <aside className="fixed left-0 w-52 h-screen bg-stone-100 py-4 border-r border-r-gray-300">

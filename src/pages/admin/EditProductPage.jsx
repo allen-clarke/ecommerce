@@ -1,29 +1,12 @@
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import axios from "axios";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import productValidationSchema from "../../validations/productValidation";
+import useProduct from "../../hooks/useProduct";
 
-const NewProducts = () => {
-  const productValidationSchema = z.object({
-    image: z.string().min(1, "Image is required"),
-    name: z.string().min(5, "Name is required"),
-    priceCents: z.coerce
-      .number({
-        invalid_type_error: "Please input numbers",
-      })
-      .min(1, "Price is required"),
+const EditProduct = () => {
+  const { product } = useProduct();
 
-    keywords: z.preprocess(
-      (value) =>
-        typeof value === "string"
-          ? value.split(",").map((keyword) => keyword.trim())
-          : value,
-      z.array(z.string().min(3, "Keyword is too short"))
-    ),
-  });
-
-  const navigate = useNavigate();
   const {
     register,
     formState: { errors, isSubmitting },
@@ -38,7 +21,7 @@ const NewProducts = () => {
 
   return (
     <div className="rounded-md px-4 py-8 bg-stone-100 min-h-screen absolute top-20 left-56 right-4">
-      <h2 className="text-2xl font-bold text-gray-800">New Product</h2>
+      <h2 className="text-2xl font-bold text-gray-800">Edit this product</h2>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="mt-8 max-w-4xl my-0 mx-auto"
@@ -59,8 +42,9 @@ const NewProducts = () => {
                 {...register("image")}
                 type="text"
                 id="image"
-                placeholder="Product Image"
+                placeholder="Edit Image"
                 className="px-4 py-3 text-gray-800 w-full text-sm rounded-md focus:outline-blue-600"
+                defaultValue={product.image}
               />
               {errors.image && (
                 <p className="text-red-500">{errors.image.message}</p>
@@ -77,8 +61,9 @@ const NewProducts = () => {
                 {...register("name")}
                 type="text"
                 id="product-name"
-                placeholder="Product Name"
+                placeholder="Edit Name"
                 className="px-4 py-3 text-gray-800 w-full text-sm rounded-md focus:outline-blue-600"
+                defaultValue={product.name}
               />
               {errors.name && (
                 <p className="text-red-500">{errors.name.message}</p>
@@ -95,8 +80,9 @@ const NewProducts = () => {
                 {...register("priceCents")}
                 type="text"
                 id="price"
-                placeholder="Price (in cents)"
+                placeholder="Edit Price (in cents)"
                 className="px-4 py-3 text-gray-800 w-full text-sm rounded-md focus:outline-blue-600"
+                defaultValue={product.priceCents}
               />
               {errors.priceCents && (
                 <p className="text-red-500">{errors.priceCents.message}</p>
@@ -113,8 +99,9 @@ const NewProducts = () => {
                 {...register("keywords")}
                 type="text"
                 id="keywords"
-                placeholder="Keywords (comma-separated if more than one)"
+                placeholder="Edit Keywords"
                 className="px-4 py-3 text-gray-800 w-full text-sm rounded-md focus:outline-blue-600"
+                defaultValue={product.keywords}
               />
               {errors.keywords && (
                 <p className="text-red-500">{errors.keywords.message}</p>
@@ -125,7 +112,10 @@ const NewProducts = () => {
 
         <div className="mt-8">
           <div className="flex gap-4 max-md:flex-col mt-8">
-            <Link className="rounded-md px-4 py-2.5 w-full text-sm tracking-wide bg-transparent hover:bg-gray-100 border border-gray-300 text-gray-800 max-md:order-1 text-center">
+            <Link
+              to="/admin"
+              className="rounded-md px-4 py-2.5 w-full text-sm tracking-wide bg-transparent hover:bg-gray-100 border border-gray-300 text-gray-800 max-md:order-1 text-center"
+            >
               Cancel
             </Link>
             <button
@@ -136,7 +126,7 @@ const NewProducts = () => {
               {isSubmitting ? (
                 <span className="loading loading-spinner"></span>
               ) : (
-                "Add Product"
+                "Save Changes"
               )}
             </button>
           </div>
@@ -145,4 +135,4 @@ const NewProducts = () => {
     </div>
   );
 };
-export default NewProducts;
+export default EditProduct;

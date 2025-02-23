@@ -1,6 +1,11 @@
 import { Link } from "react-router-dom";
+import useDeliveryFees from "../hooks/useDeliveryFees";
+import useOrderSummaryTotal from "../hooks/useOrderSummaryTotal";
 
-const OrderSummary = ({ totalPurchase }) => {
+const OrderSummary = ({ actualPurchase: actualPurchase }) => {
+  const { deliveryFees } = useDeliveryFees(actualPurchase);
+  const { total } = useOrderSummaryTotal(actualPurchase);
+
   return (
     <div className="bg-white h-max p-4 shadow-[0_2px_9px_-3px_rgba(61,63,68,0.3)] sticky top-0">
       <h3 className="text-lg font-bold text-gray-800">Order Summary</h3>
@@ -8,39 +13,35 @@ const OrderSummary = ({ totalPurchase }) => {
       <ul className="text-gray-800 text-sm space-y-3 mt-4">
         <li className="flex flex-wrap gap-4">
           Subtotal{" "}
-          <span className="ml-auto font-bold">${totalPurchase.toFixed(2)}</span>
+          <span className="ml-auto font-bold">
+            ${actualPurchase.toFixed(2)}
+          </span>
         </li>
         <li className="flex flex-wrap gap-4">
-          Delivery{" "}
-          <span className="ml-auto font-bold">
-            {totalPurchase > 150 ? "Free" : "$" + Number(3).toFixed(2)}
-          </span>
+          Delivery <span className="ml-auto font-bold">{deliveryFees}</span>
         </li>
 
         <li className="flex flex-wrap gap-4 font-bold">
-          Total{" "}
-          <span className="ml-auto">
-            $
-            {totalPurchase > 150
-              ? totalPurchase.toFixed(2)
-              : (totalPurchase + 3).toFixed(2)}
-          </span>
+          Total <span className="ml-auto">{total}</span>
         </li>
       </ul>
-
-      <button
-        type="button"
-        className="mt-6 text-sm px-4 py-2.5 w-full bg-blue-700 hover:bg-blue-800 tracking-wide text-white"
-      >
-        Checkout
-      </button>
-
-      <button
-        type="button"
-        className="mt-6 text-sm px-4 py-2.5 w-full text-blue-700 hover:text-blue-800 tracking-wide"
-      >
-        <i className="bx bx-left-arrow-alt text-gray-500"></i> Continue shopping
-      </button>
+      <Link to="/checkout">
+        <button
+          type="button"
+          className="mt-6 text-sm px-4 py-2.5 w-full bg-blue-700 hover:bg-blue-800 tracking-wide text-white"
+        >
+          Checkout
+        </button>
+      </Link>
+      <Link to="/">
+        <button
+          type="button"
+          className="mt-6 text-sm px-4 py-2.5 w-full text-blue-700 hover:text-blue-800 tracking-wide"
+        >
+          <i className="bx bx-left-arrow-alt text-gray-500"></i> Continue
+          shopping
+        </button>
+      </Link>
 
       <div className="mt-6 space-y-6">
         <div>
