@@ -3,7 +3,7 @@ const Header = () => {
     <header className="flex justify-between items-center fixed left-52 right-0 bg-stone-100 py-3 border-b border-b-gray-300 z-50">
       <div>
         <p className="text-2xl text-black font-bold font-sans pl-3">
-          Product List
+          Administration
         </p>
       </div>
       <div className="flex items-center pr-2">

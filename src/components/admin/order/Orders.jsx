@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import convertCents from "../../../utilities/convertCents";
+import Head from "../products/head/Head";
+import OrderPreviewModal from "./OrderPreviewModal";
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
@@ -36,6 +38,13 @@ const Orders = () => {
 
   return (
     <>
+      {/* <Head /> */}
+      <OrderPreviewModal
+        orderPreviewBoxesAreVisible={orderPreviewBoxesAreVisible}
+        setOrderPreviewBoxesAreVisible={setOrderPreviewBoxesAreVisible}
+        orderPreview={orderPreview}
+        setOrderPreview={setOrderPreview}
+      />
       <div
         className={
           orderPreviewBoxesAreVisible
@@ -68,31 +77,40 @@ const Orders = () => {
                     </label>
                   </th>
                   <td>#{order.id}</td>
-                  <td>{order.buyerDetails.fullname}</td>
+                  <td>{`${order.buyerDetails.firstname} ${order.buyerDetails.lastname}`}</td>
                   <td>${order.orderTotal.toFixed(2)}</td>
                   <td>{order.buyerDetails.date}</td>
                   <td className="flex items-center">
                     <button
-                      className="bg-gray-300 w-8 h-8 mr-0.5 rounded-md"
                       title="preview order"
                       onClick={() => {
                         setOrderPreview(order.cart);
+
                         setOrderPreviewBoxesAreVisible(true);
                       }}
                     >
-                      <i className="text-2xl text-gray-600 bx bx-camera"></i>
+                      {/* <i className="text-2xl text-gray-600 bx bx-camera"></i> */}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="w-6 fill-current hover:fill-gray-400 mr-3 inline-block"
+                        viewBox="0 0 128 128"
+                      >
+                        <path
+                          d="M64 104C22.127 104 1.367 67.496.504 65.943a4 4 0 0 1 0-3.887C1.367 60.504 22.127 24 64 24s62.633 36.504 63.496 38.057a4 4 0 0 1 0 3.887C126.633 67.496 105.873 104 64 104zM8.707 63.994C13.465 71.205 32.146 96 64 96c31.955 0 50.553-24.775 55.293-31.994C114.535 56.795 95.854 32 64 32 32.045 32 13.447 56.775 8.707 63.994zM64 88c-13.234 0-24-10.766-24-24s10.766-24 24-24 24 10.766 24 24-10.766 24-24 24zm0-40c-8.822 0-16 7.178-16 16s7.178 16 16 16 16-7.178 16-16-7.178-16-16-16z"
+                          data-original="#000000"
+                        ></path>
+                      </svg>
                     </button>
                     <button
-                      className="bg-gray-300 w-8 h-8 rounded-md"
                       title="delete order"
                       onClick={() => handleOrderDeletion(order)}
                     >
-                      <i className="text-2xl text-red-600 bx bx-trash"></i>
+                      <i className="text-xl text-gray-500 hover:text-red-600 bx bx-trash"></i>
                     </button>
                   </td>
                 </tr>
               ))}
-              <tr className="border-b border-b-gray-300 text-green-500">
+              <tr className="border-b border-b-gray-300 text-indigo-500">
                 <th></th>
                 <td>----------</td>
                 <td>Total Order</td>
@@ -114,86 +132,25 @@ const Orders = () => {
           </table>
         </div>
       </div>
-      <div
-        className={
-          orderPreviewBoxesAreVisible
-            ? "fixed bg-black opacity-90 left-0 right-0 min-h-screen z-50"
-            : "fixed bg-black opacity-90 left-0 right-0 min-h-screen z-50 hidden"
-        }
-      >
-        <button
-          className="text-white"
-          onClick={() => {
-            setOrderPreview([]);
-            setOrderPreviewBoxesAreVisible(false);
-          }}
-        >
-          <i className="bx bx-x bx-lg font-black"></i>
-        </button>
-      </div>
-      <div
-        className={
-          orderPreviewBoxesAreVisible
-            ? "absolute top-20 left-56 right-4 text-3xl text-white min-h-screen border border-gray-300 rounded-b-lg bg-stone-100 z-[1000]"
-            : "absolute top-20 left-56 right-4 text-3xl text-white min-h-screen border border-gray-300 rounded-b-lg bg-stone-100 z-[1000] hidden"
-        }
-      >
-        {orderPreview.map((order) => {
-          return (
-            <div
-              className="flex flex-row border rounded-md py-7 mb-2 relative z-50"
-              key={order.id}
-            >
-              <div className="flex justify-center h-52 basis-1/2 shrink">
-                <img
-                  src={"/" + order.image}
-                  alt={order.name}
-                  className="max-h-full max-w-full object-cover cursor-pointer"
-                />
-              </div>
-              <div className="flex basis-1/2 h-full pr-1">
-                <div className="flex flex-row justify-end items-center mb-3">
-                  <div className="flex flex-col justify-between">
-                    <div className="flex flex-col">
-                      <p className="text-black font-sans mb-2 text-2xl anton-sc">
-                        {order.name}
-                      </p>
 
-                      <div>
-                        <p className="text-black font-semibold font-sans mt-4 text-[18px]">
-                          Quantity: {order.quantity}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex flex-row flex-wrap justify-between mt-8 items-center w-full">
-                      <div>
-                        <p className="text-black font-semibold font-sans text-[18px]">
-                          Unit Price:{"  "}
-                          <span className="font-mono">
-                            &nbsp;${convertCents(order.priceCents)}
-                          </span>
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-black font-semibold font-sans text-[18px]">
-                          Total:{"  "}
-                          <span className="font-mono">
-                            &nbsp;$
-                            {(
-                              convertCents(order.priceCents) * order.quantity
-                            ).toFixed(2)}
-                          </span>
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+      {/*  <div className="relative grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+          {orderPreview.map((order) => (
+            <a key={order.id} className="group">
+              <img
+                alt={order.name}
+                src={`/${order.image}`}
+                className="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-7/8"
+              />
+              <h3 className="mt-4 text-sm text-gray-900">{order.name}</h3>
+              <p className="mt-1 text-lg font-medium text-gray-900">
+                ${convertCents(order.priceCents)}
+              </p>
+              <p className="mt-1 text-lg font-medium text-gray-900">
+                Qty: {order.quantity}
+              </p>
+            </a>
+          ))} 
+        </div>*/}
     </>
   );
 };

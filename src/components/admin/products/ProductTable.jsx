@@ -58,19 +58,14 @@ const ProductTable = () => {
                 <td>{convertCents(product.priceCents)}</td>
                 <td>Clothing</td>
                 <td className="flex items-center">
-                  <Link
-                    to={"/admin/edit/" + product.id}
-                    className="bg-gray-300 w-8 h-8 mr-0.5 rounded-md flex items-center justify-center"
-                    title="edit product"
-                  >
-                    <i className="text-2xl text-gray-700 bx bx-pencil"></i>
+                  <Link to={"/admin/edit/" + product.id} title="edit product">
+                    <i className="text-2xl text-gray-700 hover:text-gray-400 bx bx-pencil"></i>
                   </Link>
                   <button
-                    className="bg-gray-300 w-8 h-8 rounded-md"
                     title="delete product"
                     onClick={() => handleDeleteProduct(product)}
                   >
-                    <i className="text-2xl text-red-600 bx bx-trash"></i>
+                    <i className="text-2xl text-gray-500 hover:text-red-600 bx bx-trash"></i>
                   </button>
                 </td>
               </tr>

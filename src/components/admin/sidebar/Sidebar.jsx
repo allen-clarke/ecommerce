@@ -6,7 +6,7 @@ const Sidebar = () => {
   const [isActive, setIsActive] = useState(0);
 
   return (
-    <aside className="fixed left-0 w-52 h-screen bg-stone-100 py-4 border-r border-r-[rgb(29,35,42)]">
+    <aside className="fixed left-0 w-52 h-screen bg-stone-100 py-4 border-r border-r-gray-300">
       <p className="text-black text-2xl anton-sc ml-3.5">Fashionista</p>
 
       <div className="mt-7">

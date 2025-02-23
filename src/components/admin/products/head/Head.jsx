@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const Head = () => {
   return (
-    <div className="fixed z-40 top-12 left-56 right-4 flex flex-col bg-[rgb(29,35,42)] pt-8">
+    <div className="fixed z-40 top-12 left-56 right-4 flex flex-col bg-white pt-8">
       <div className="flex items-center py-3 justify-between rounded-t-lg border border-gray-300 bg-stone-100">
         <div>
           <p className="text-xl text-black font-bold font-sans pl-3">
