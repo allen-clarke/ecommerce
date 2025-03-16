@@ -1,10 +1,8 @@
-import Head from "../../components/admin/head/Head";
-import ProductTable from "../../components/admin/products/ProductTable";
+import ProductTable from "../../components/admin/ProductTable";
 
 const Products = () => {
   return (
     <>
-      <Head />
       <ProductTable />
     </>
   );

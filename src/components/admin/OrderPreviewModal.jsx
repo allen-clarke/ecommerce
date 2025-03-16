@@ -1,4 +1,4 @@
-import convertCents from "../../../utilities/convertCents";
+import convertCents from "../../utilities/convertCents";
 const OrderPreviewModal = ({
   orderPreviewBoxesAreVisible,
   setOrderPreviewBoxesAreVisible,

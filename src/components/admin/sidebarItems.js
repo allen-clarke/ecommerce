@@ -1,8 +1,13 @@
 export const sidebarItems = [
   {
+    icon: "bx-pulse",
+    label: "Analytics",
+    link: "/admin/analytics",
+  },
+  {
     icon: "bxl-product-hunt",
     label: "Products",
-    link: "/admin",
+    link: "/admin/products",
   },
   {
     icon: "bxs-cart-alt",
@@ -10,18 +15,15 @@ export const sidebarItems = [
     link: "/admin/orders",
   },
   {
-    icon: "bx-pulse",
-    label: "Analytics",
-    link: "analytics",
-  },
-  {
     icon: "bx-bell",
     label: "Notifications",
-    link: "notifications",
+    link: "/admin/notifications",
   },
   {
     icon: "bx-cog",
     label: "Settings",
-    link: "settings",
+    link: "/admin/settings",
   },
 ];
+
+export default sidebarItems;

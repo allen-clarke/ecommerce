@@ -12,21 +12,6 @@ const Checkout = () => {
   } = useForm({ resolver: zodResolver(checkoutFormValidation) });
 
   return (
-    /*  <input
-              type="text"
-              placeholder="Type here"
-              classNameName="input input-bordered input-primary w-full max-w-xs"
-            />
-            <select classNameName="select select-primary w-full max-w-xs">
-              <option disabled selected>
-                What is the best TV show?
-              </option>
-              <option>Game of Thrones</option>
-              <option>Lost</option>
-              <option>Breaking Bad</option>
-              <option>Walking Dead</option>
-            </select> */
-
     <div className="max-w-4xl w-full h-max rounded-md px-4 py-8 sticky top-0 my-0 mx-auto">
       <h2 className="text-2xl font-bold text-gray-800">Complete your order</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="mt-8">
