@@ -11,7 +11,6 @@ const checkoutFormValidation = z.object({
   community: z.string().min(1, "Required"),
   city: z.string().min(1, "Required"),
   county: z.string().min(1, "Required"),
-  date: z.string().optional(),
 });
 
 export default checkoutFormValidation;

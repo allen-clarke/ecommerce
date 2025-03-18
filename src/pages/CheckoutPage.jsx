@@ -33,16 +33,6 @@ const Checkout = () => {
                 </div>
               );
             })}
-
-            <div>
-              <input
-                {...register("date")}
-                type="text"
-                className="px-4 py-3 bg-gray-100 focus:bg-transparent text-gray-800 w-full text-sm rounded-md"
-                disabled
-                defaultValue={new Date().toLocaleDateString()}
-              />
-            </div>
           </div>
         </div>
 

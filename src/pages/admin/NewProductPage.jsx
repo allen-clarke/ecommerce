@@ -2,10 +2,13 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import productValidationSchema from "../../validations/productValidation";
+import axios from "axios";
+import { useRef, useState } from "react";
 
 const NewProducts = () => {
   const {
     register,
+    setValue,
     formState: { errors, isSubmitting },
     handleSubmit,
   } = useForm({
@@ -13,7 +16,18 @@ const NewProducts = () => {
   });
 
   const onSubmit = (data) => {
-    console.log(data);
+    const formData = new FormData();
+    formData.append("category", data.category);
+    formData.append("name", data.name);
+    formData.append("price", data.price);
+    formData.append("image", data.image);
+    formData.append("keywords", JSON.stringify(data.keywords));
+    // console.log(formData);
+
+    axios
+      .post("http://localhost:5000/api/products", formData)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -41,9 +55,12 @@ const NewProducts = () => {
                     <input
                       type="file"
                       className="w-full text-gray-400 font-semibold text-sm bg-white border file:cursor-pointer cursor-pointer file:border-0 file:py-3 file:px-4 file:mr-4 file:bg-gray-100 file:hover:bg-gray-200 file:text-gray-500 rounded"
+                      onChange={(e) => {
+                        setValue("image", e.target.files[0]);
+                      }}
                     />
                     <p className="text-xs text-gray-400 mt-2">
-                      PNG, JPG, SVG, WEBP, and GIF are Allowed.
+                      PNG, JPG, WEBP, and GIF are Allowed.
                     </p>
 
                     {errors.image && (
@@ -76,16 +93,14 @@ const NewProducts = () => {
                       Price
                     </label>
                     <input
-                      {...register("priceCents")}
+                      {...register("price")}
                       type="text"
                       id="price"
                       placeholder="Price"
                       className="px-4 py-3 text-gray-800 w-full text-sm rounded-md focus:outline-blue-600 focus:bg-transparent border border-gray-300 bg-stone-50"
                     />
-                    {errors.priceCents && (
-                      <p className="text-red-500">
-                        {errors.priceCents.message}
-                      </p>
+                    {errors.price && (
+                      <p className="text-red-500">{errors.price.message}</p>
                     )}
                   </div>
                   <div>
@@ -97,17 +112,19 @@ const NewProducts = () => {
                     </label>
                     <br />
                     <select
+                      {...register("category")}
                       className="select bg-stone-50 border border-gray-300 w-full max-w-xs focus:outline-blue-600 focus:bg-transparent"
                       defaultValue="Category"
                     >
-                      <option disabled>Category</option>
+                      <option disabled>Others</option>
                       <option>Necklace</option>
+                      <option>Others</option>
                       <option>Footwear</option>
                       <option>Shirts</option>
                       <option>Trousers</option>
                     </select>
-                    {errors.keywords && (
-                      <p className="text-red-500">{errors.keywords.message}</p>
+                    {errors.category && (
+                      <p className="text-red-500">{errors.category.message}</p>
                     )}
                   </div>
                   <div>
