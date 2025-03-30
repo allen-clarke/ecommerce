@@ -1,7 +1,11 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import admin from "../../assets/admin.jfif";
+import { useAuth } from "../../context/AuthContext";
 const DashboardHeader = () => {
   const [userDropDownIsOpened, setUserDropDownIsOpened] = useState(false);
+  const navigate = useNavigate();
+  const { logout } = useAuth();
 
   return (
     <header className="bg-white shadow flex justify-between items-center fixed w-full z-10 md:ml-64">
@@ -64,7 +68,13 @@ const DashboardHeader = () => {
             <i className="bx bx-cog mr-1"></i>
             Settings
           </li>
-          <li className="flex items-center font-normal font-[sans-serif] pl-3 py-1.5 cursor-pointer text-gray-700">
+          <li
+            className="flex items-center font-normal font-[sans-serif] pl-3 py-1.5 cursor-pointer text-gray-700"
+            onClick={() => {
+              logout();
+              navigate("/");
+            }}
+          >
             <i className="bx bx-log-out-circle mr-1"></i>
             Logout
           </li>
