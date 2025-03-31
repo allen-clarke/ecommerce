@@ -51,6 +51,7 @@ export const AuthProvider = ({ children }) => {
   const signInWithGoogle = async () => {
     try {
       const provider = new GoogleAuthProvider();
+      await setPersistence(auth, browserLocalPersistence);
       const result = await signInWithPopup(auth, provider);
       setUser(result.user);
       await checkAdminStatus(result.user.uid);
@@ -62,6 +63,7 @@ export const AuthProvider = ({ children }) => {
   // 🔹 Email & Password Sign-Up
   const signUpWithEmail = async (email, password) => {
     try {
+      await setPersistence(auth, browserLocalPersistence);
       const result = await createUserWithEmailAndPassword(
         auth,
         email,
@@ -79,6 +81,7 @@ export const AuthProvider = ({ children }) => {
   // 🔹 Email & Password Sign-In
   const signInWithEmail = async (email, password) => {
     try {
+      await setPersistence(auth, browserLocalPersistence);
       const result = await signInWithEmailAndPassword(auth, email, password);
       setUser(result.user);
       await checkAdminStatus(result.user.uid);
