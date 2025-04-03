@@ -13,6 +13,9 @@ import {
   isSignInWithEmailLink,
   setPersistence,
   browserLocalPersistence,
+  updateProfile,
+  updateEmail,
+  updatePassword,
 } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { auth, db } from "../firebaseConfig"; // Import Firestore database
@@ -27,7 +30,8 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
-
+  const [message, setMessage] = useState("");
+  const [editingField, setEditingField] = useState(null);
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
@@ -160,6 +164,58 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Update Name
+  const handleUpdateName = async (displayName) => {
+    try {
+      await updateProfile(user, { displayName });
+      setEditingField(null);
+      setMessage("Name updated successfully!");
+    } catch (error) {
+      setMessage(error.message);
+      console.log(error);
+    }
+  };
+
+  // Update Name
+  const handleUpdatePhotoURL = async (photoURL) => {
+    try {
+      await updateProfile(user, { photoURL });
+      setEditingField(null);
+      setMessage("Photo updated successfully!");
+    } catch (error) {
+      setMessage(error.message);
+      console.log(error);
+    }
+  };
+
+  // Update Email
+  const handleUpdateEmail = async (email) => {
+    try {
+      await updateEmail(user, email);
+      setEditingField(null);
+      setMessage("Email updated successfully!");
+    } catch (error) {
+      setMessage(error.message);
+      console.log(error);
+    }
+  };
+
+  // Update Password
+  const handleUpdatePassword = async (password) => {
+    try {
+      if (password.length < 8) {
+        setMessage("Password must be at least 8 characters long.");
+        return;
+      }
+      await updatePassword(user, password);
+      setEditingField(null);
+      setMessage("Password updated successfully!");
+    } catch (error) {
+      setMessage(error.message);
+      console.log(error);
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -172,6 +228,15 @@ export const AuthProvider = ({ children }) => {
         handleEmailLinkLogin,
         logout,
         loading,
+
+        editingField,
+        setEditingField,
+        message,
+        setMessage,
+        handleUpdateName,
+        handleUpdatePhotoURL,
+        handleUpdateEmail,
+        handleUpdatePassword,
       }}
     >
       {children}

@@ -5,6 +5,7 @@ import Products from "./pages/HomePage";
 import Checkout from "./pages/CheckoutPage";
 import Admin from "./pages/admin/Admin";
 import Login from "./pages/LoginPage";
+import ProfileSettings from "./pages/ProfileSettings";
 import AdminRoute from "./components/admin/AdminRoute";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -22,6 +23,14 @@ function App() {
               <ProtectedRoute>
                 <Checkout />
               </ProtectedRoute>
+            }
+          />
+          <Route
+            path="settings"
+            element={
+              // <ProtectedRoute>
+              <ProfileSettings />
+              // { </ProtectedRoute> }
             }
           />
           <Route
