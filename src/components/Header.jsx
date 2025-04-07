@@ -1,10 +1,16 @@
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { CartQuantity } from "../context/CartQuantity";
+import { useAuth } from "../context/AuthContext";
+import UserDropDown from "./UserDropDown";
 
 const Header = () => {
   const { cartQuantity } = useContext(CartQuantity);
   const [menuIsClosed, setMenuIsClosed] = useState(true);
+
+  const [userDropDownIsOpened, setUserDropDownIsOpened] = useState(false);
+
+  const { user } = useAuth();
 
   const handleMenuDisplay = () => {
     menuIsClosed ? setMenuIsClosed(false) : setMenuIsClosed(true);
@@ -66,9 +72,22 @@ const Header = () => {
                       className="w-36"
                     />
                   </a>
-                  <button className="px-4 py-2 text-sm rounded-full text-white border-2 border-[#007bff] bg-[#007bff] hover:bg-[#004bff]">
-                    Sign In
-                  </button>
+                  {!user ? (
+                    <Link to="/login-or-signup">
+                      <button className="px-4 py-2 text-sm rounded-full text-white border-2 border-[#007bff] bg-[#007bff] hover:bg-[#004bff]">
+                        Sign In
+                      </button>
+                    </Link>
+                  ) : (
+                    <img
+                      className="rounded-full h-8 w-8 object-cover cursor-pointer"
+                      src={
+                        user.photoURL ||
+                        "https://res.cloudinary.com/dnaeqhzin/image/upload/v1743949163/user-avatar_rfev7u.png"
+                      }
+                      alt="User avatar"
+                    />
+                  )}
                 </div>
               </li>
               <li className="max-lg:border-b max-lg:py-3 px-3">
@@ -168,10 +187,24 @@ const Header = () => {
                   </span>
                 </Link>
               </div>
-
-              <button className="max-lg:hidden px-4 py-2 text-sm rounded-full text-white border-2 border-[#007bff] bg-[#007bff] hover:bg-[#004bff]">
-                Sign In
-              </button>
+              {!user ? (
+                <Link to="/login-or-signup">
+                  <button className="max-lg:hidden px-4 py-2 text-sm rounded-full text-white border-2 border-[#007bff] bg-[#007bff] hover:bg-[#004bff]">
+                    Sign In
+                  </button>
+                </Link>
+              ) : (
+                <img
+                  className="rounded-full h-8 w-8 object-cover cursor-pointer"
+                  src={
+                    user.photoURL ||
+                    "https://res.cloudinary.com/dnaeqhzin/image/upload/v1743949163/user-avatar_rfev7u.png"
+                  }
+                  onMouseOver={() => setUserDropDownIsOpened(true)}
+                  onMouseOut={() => setUserDropDownIsOpened(false)}
+                  alt="User avatar"
+                />
+              )}
 
               <button className="lg:hidden" onClick={handleMenuDisplay}>
                 <svg
@@ -191,6 +224,10 @@ const Header = () => {
           </div>
         </div>
       </div>
+      <UserDropDown
+        userDropDownIsOpened={userDropDownIsOpened}
+        setUserDropDownIsOpened={setUserDropDownIsOpened}
+      />
     </header>
   );
 };
