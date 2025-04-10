@@ -1,33 +1,46 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { useForm } from "react-hook-form";
+import signUpSchema from "../validations/signUpValidation";
+import loginSchema from "../validations/loginValidation";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
-
-  const { signInWithEmail } = useAuth();
+  const [isRegistered, setIsRegistered] = useState(true);
 
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log("email:", email);
-    console.log("password:", password);
+  const { signInWithEmail } = useAuth();
+  const {
+    register,
+    formState: { errors, isSubmitting },
+    handleSubmit,
+  } = useForm({
+    resolver: zodResolver(isRegistered ? loginSchema : signUpSchema),
+  });
 
-    setError("");
-    try {
-      const user = await signInWithEmail(email, password);
-      navigate(from, { replace: true });
-      console.log("Logged in:", user);
-    } catch (err) {
-      console.error("Error:", err.code, err.message);
-      setError(err.message); // Show readable error message
-    }
+  const onSubmit = async (e) => {
+    isRegistered ? console.log("loggin in...") : console.log("registering...");
+    // if(isRegistered)
+    // console.log("email:", email);
+    // console.log("password:", password);
+
+    // setError("");
+    // try {
+    //   const user = await signInWithEmail(email, password);
+    //   navigate(from, { replace: true });
+    //   console.log("Logged in:", user);
+    // } catch (err) {
+    //   console.error("Error:", err.code, err.message);
+    //   setError(err.message);
+    // }
   };
 
   return (
@@ -35,26 +48,35 @@ const Login = () => {
       <div className="grid md:grid-cols-2 items-center gap-10 max-w-6xl max-md:max-w-md w-full">
         <div>
           <h2 className="lg:text-5xl text-3xl font-bold lg:leading-[57px] text-slate-900">
-            Seamless Login for Exclusive Access
+            Seamless {isRegistered ? "Login" : "SignUp"} for Exclusive Access
           </h2>
           <p className="text-sm mt-6 text-slate-500 leading-relaxed">
-            Immerse yourself in a hassle-free login journey with our intuitively
-            designed login form. Effortlessly access your account.
+            {isRegistered
+              ? `Immerse yourself in a hassle-free login journey with our intuitively
+            designed login form. Effortlessly access your account.`
+              : `Immerse yourself in a hassle-free registration journey with our intuitively
+            designed registratiom form. Effortlessly tour the market on your device.`}
           </p>
+
           <p className="text-sm mt-12 text-slate-500">
-            Don't have an account{" "}
+            {isRegistered
+              ? "Don't have an account ?"
+              : "Already Have an account ?"}{" "}
             <a
-              href="javascript:void(0);"
-              className="text-blue-600 font-medium hover:underline ml-1"
+              className="text-blue-600 font-medium hover:underline ml-1 cursor-pointer"
+              onClick={() => setIsRegistered(!isRegistered)}
             >
-              Register here
+              {isRegistered ? "Register here" : "Login here"}
             </a>
           </p>
         </div>
 
-        <form className="max-w-md md:ml-auto w-full" onSubmit={handleSubmit}>
+        <form
+          className="max-w-md md:ml-auto w-full"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <h3 className="text-slate-900 lg:text-3xl text-2xl font-bold mb-8">
-            Sign in
+            {isRegistered ? "Log in" : "Sign up"}
           </h3>
 
           <div className="space-y-6">
@@ -63,29 +85,51 @@ const Login = () => {
                 Email
               </label>
               <input
+                {...register("email")}
                 name="email"
-                type="email"
-                required
                 className="bg-slate-100 w-full text-sm text-slate-800 px-4 py-3 rounded-md outline-none border focus:border-blue-600 focus:bg-transparent"
                 placeholder="Enter Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
+              {errors.email && (
+                <p className="text-red-500">{errors.email.message}</p>
+              )}
             </div>
             <div>
               <label className="text-sm text-slate-800 font-medium mb-2 block">
                 Password
               </label>
               <input
-                name="password"
+                {...register("password")}
                 type="password"
-                required
                 className="bg-slate-100 w-full text-sm text-slate-800 px-4 py-3 rounded-md outline-none border focus:border-blue-600 focus:bg-transparent"
                 placeholder="Enter Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
+              {errors.password && (
+                <p className="text-red-500">{errors.password.message}</p>
+              )}
             </div>
+            {!isRegistered && (
+              <div>
+                <label className="text-sm text-slate-800 font-medium mb-2 block">
+                  Confirm Password
+                </label>
+                <input
+                  {...register("confirmPassword")}
+                  type="password"
+                  className="bg-slate-100 w-full text-sm text-slate-800 px-4 py-3 rounded-md outline-none border focus:border-blue-600 focus:bg-transparent"
+                  placeholder="Confirm Password"
+                />
+                {errors.confirmPassword && (
+                  <p className="text-red-500">
+                    {errors.confirmPassword.message}
+                  </p>
+                )}
+              </div>
+            )}
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div className="flex items-center">
                 <input
@@ -117,7 +161,7 @@ const Login = () => {
               type="submit"
               className="w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded text-white bg-blue-600 hover:bg-blue-700 focus:outline-none"
             >
-              Log in
+              {isRegistered ? "Log in" : "Sign up"}
             </button>
           </div>
 
