@@ -6,6 +6,7 @@ import { useAuth } from "../context/AuthContext";
 import { useLoginOrSignupErrors } from "../hooks/useLoginOrSignupErrors";
 import signUpSchema from "../validations/signUpValidation";
 import loginSchema from "../validations/loginValidation";
+import Spinner from "../components/Spinner";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -162,9 +163,11 @@ const Login = () => {
           <div className="!mt-12">
             <button
               type="submit"
-              className="w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded text-white bg-blue-600 hover:bg-blue-700 focus:outline-none"
+              className="w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded text-white bg-blue-600 hover:bg-blue-700 focus:outline-none disabled:cursor-not-allowed"
+              disabled={isSubmitting}
             >
-              {isRegistered ? "Log in" : "Sign up"}
+              {" "}
+              {isSubmitting ? <Spinner /> : isRegistered ? "Log in" : "Sign up"}
             </button>
           </div>
 

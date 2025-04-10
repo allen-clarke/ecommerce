@@ -3,6 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { checkoutInputs } from "../components/checkout/checkoutInputs";
 import { onSubmit } from "../components/checkout/onSubmit";
 import checkoutFormValidation from "../validations/checkoutFormValidation";
+import Spinner from "../components/Spinner";
 
 const Checkout = () => {
   const {
@@ -48,11 +49,7 @@ const Checkout = () => {
               className="rounded-md px-4 py-2.5 w-full text-sm tracking-wide bg-blue-600 hover:bg-blue-700 text-white disabled:cursor-not-allowed"
               disabled={isSubmitting}
             >
-              {isSubmitting ? (
-                <span className="loading loading-spinner"></span>
-              ) : (
-                "Complete Purchase"
-              )}
+              {isSubmitting ? <Spinner /> : "Complete Purchase"}
             </button>
           </div>
         </div>
