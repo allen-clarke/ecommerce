@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useAuth } from "../context/AuthContext";
+import { useLoginOrSignupErrors } from "../hooks/useLoginOrSignupErrors";
 import signUpSchema from "../validations/signUpValidation";
 import loginSchema from "../validations/loginValidation";
-import { zodResolver } from "@hookform/resolvers/zod";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -17,7 +18,9 @@ const Login = () => {
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
 
-  const { signInWithEmail } = useAuth();
+  const { signInWithEmail, signUpWithEmail } = useAuth();
+  const { authError, clearAuthError, handleAuthError } =
+    useLoginOrSignupErrors();
   const {
     register,
     formState: { errors, isSubmitting },
@@ -27,20 +30,19 @@ const Login = () => {
   });
 
   const onSubmit = async (e) => {
-    isRegistered ? console.log("loggin in...") : console.log("registering...");
-    // if(isRegistered)
-    // console.log("email:", email);
-    // console.log("password:", password);
-
-    // setError("");
-    // try {
-    //   const user = await signInWithEmail(email, password);
-    //   navigate(from, { replace: true });
-    //   console.log("Logged in:", user);
-    // } catch (err) {
-    //   console.error("Error:", err.code, err.message);
-    //   setError(err.message);
-    // }
+    clearAuthError();
+    try {
+      if (isRegistered) {
+        await signInWithEmail(email, password);
+        navigate(from, { replace: true });
+      } else {
+        await signUpWithEmail(email, password);
+        navigate(from, { replace: true });
+      }
+    } catch (error) {
+      handleAuthError(error);
+      console.log(error.message);
+    }
   };
 
   return (
@@ -130,6 +132,7 @@ const Login = () => {
                 )}
               </div>
             )}
+            {authError && <p className="text-red-500 mt-7">{authError}</p>}
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div className="flex items-center">
                 <input
